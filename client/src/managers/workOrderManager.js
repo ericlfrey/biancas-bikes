@@ -23,3 +23,13 @@ export const updateWorkOrder = (workOrder) => {
     body: JSON.stringify(workOrder),
   });
 };
+
+export const closeWorkOrder = id => {
+  return fetch(`${_apiUrl}/${id}/complete`, {
+    method: 'POST',
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+  });
+}
