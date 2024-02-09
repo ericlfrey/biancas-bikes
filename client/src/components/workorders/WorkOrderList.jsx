@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Input, Table } from 'reactstrap';
+import { Button, Input, Table } from 'reactstrap';
 import {
+  closeWorkOrder,
   getIncompleteWorkOrders,
   updateWorkOrder,
 } from '../../managers/workOrderManager';
@@ -11,25 +12,26 @@ export default function WorkOrderList({ loggedInUser }) {
   const [workOrders, setWorkOrders] = useState([]);
   const [mechanics, setMechanics] = useState([]);
 
-  useEffect(() => {
+  const getAllIncompleteOrders = () =>
     getIncompleteWorkOrders().then(setWorkOrders);
-    getUserProfiles().then(setMechanics);
-  }, []);
 
   useEffect(() => {
-    getIncompleteWorkOrders().then(setWorkOrders);
+    getAllIncompleteOrders();
+    getUserProfiles().then(setMechanics);
   }, []);
 
   const assignMechanic = (workOrder, mechanicId) => {
     const clone = structuredClone(workOrder);
     clone.userProfileId = mechanicId || null;
     updateWorkOrder(clone).then(() => {
-      getIncompleteWorkOrders().then(setWorkOrders);
+      getAllIncompleteOrders();
     });
   };
 
   const completeWorkOrder = workOrderId => {
-    console.log(`Completed ${workOrderId}`);
+    closeWorkOrder(workOrderId).then(() =>
+      getIncompleteWorkOrders().then(setWorkOrders)
+    );
   };
 
   return (
@@ -83,12 +85,6 @@ export default function WorkOrderList({ loggedInUser }) {
                   </Button>
                 )}
               </td>
-              {/* <td>
-                {wo.userProfile
-                  ? `${wo.userProfile.firstName} ${wo.userProfile.lastName}`
-                  : 'unassigned'}
-              </td>
-              <td></td> */}
             </tr>
           ))}
         </tbody>
