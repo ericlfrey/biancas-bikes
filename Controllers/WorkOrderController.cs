@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using BiancasBikes.Data;
+using BiancasBikes.Models;
 
 namespace BiancasBikes.Controllers;
 
@@ -29,5 +30,15 @@ public class WorkOrderController : ControllerBase
     .Where(wo => wo.DateCompleted == null)
     .OrderBy(wo => wo.DateInitiated)
     .ThenByDescending(wo => wo.UserProfileId == null).ToList());
+  }
+
+  [HttpPost]
+  [Authorize]
+  public IActionResult CreateWorkOrder(WorkOrder workOrder)
+  {
+    workOrder.DateInitiated = DateTime.Now;
+    _dbContext.WorkOrders.Add(workOrder);
+    _dbContext.SaveChanges();
+    return Created($"/api/workorder/{workOrder.Id}", workOrder);
   }
 }
