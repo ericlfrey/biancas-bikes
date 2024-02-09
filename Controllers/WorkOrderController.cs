@@ -42,6 +42,21 @@ public class WorkOrderController : ControllerBase
     return Created($"/api/workorder/{workOrder.Id}", workOrder);
   }
 
+  [HttpPost("{id}/complete")]
+  [Authorize]
+  public IActionResult CompleteWorkOrder(int id)
+  {
+    WorkOrder workOrderToComplete = _dbContext.WorkOrders.SingleOrDefault(wo => wo.Id == id);
+    if (workOrderToComplete == null)
+    {
+      return NotFound();
+    }
+    workOrderToComplete.DateCompleted = DateTime.Now;
+    _dbContext.SaveChanges();
+
+    return NoContent();
+  }
+
   [HttpPut("{id}")]
   [Authorize]
   public IActionResult UpdateWorkOrder(WorkOrder workOrder, int id)
