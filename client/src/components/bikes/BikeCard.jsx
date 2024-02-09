@@ -5,15 +5,15 @@ import {
   CardText,
   CardSubtitle,
   Button,
-} from "reactstrap";
+} from 'reactstrap';
 
 export default function BikeCard({ bike, setDetailsBikeId }) {
   return (
-    <Card color="dark" outline style={{ marginBottom: "4px" }}>
+    <Card color="dark" outline style={{ marginBottom: '4px' }}>
       <CardBody>
         <CardTitle tag="h5">{bike.brand}</CardTitle>
         <CardSubtitle className="mb-2 text-muted" tag="h6">
-          Owner: {bike.owner.name}
+          Owner: {bike?.owner.name}
         </CardSubtitle>
         <CardText>Color: {bike.color}</CardText>
         <Button
@@ -23,7 +23,7 @@ export default function BikeCard({ bike, setDetailsBikeId }) {
             window.scrollTo({
               top: 0,
               left: 0,
-              behavior: "smooth",
+              behavior: 'smooth',
             });
           }}
         >
