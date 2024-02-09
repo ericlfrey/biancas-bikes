@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { NavLink as RRNavLink } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { NavLink as RRNavLink } from 'react-router-dom';
 import {
   Button,
   Collapse,
@@ -10,8 +10,9 @@ import {
   NavbarBrand,
   NavbarText,
   NavbarToggler,
-} from "reactstrap";
-import { logout } from "../managers/authManager";
+} from 'reactstrap';
+import { logout } from '../managers/authManager';
+import { getBikesInShopCount } from '../managers/bikeManager';
 
 export default function NavBar({ loggedInUser, setLoggedInUser }) {
   const [inventory, setInventory] = useState(0);
@@ -20,7 +21,7 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
   const toggleNavbar = () => setOpen(!open);
 
   const getInventory = () => {
-    //implement functionality here....
+    getBikesInShopCount().then(setInventory);
   };
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
             src="./bike.png"
             alt="bike"
             height={50}
-            style={{ marginRight: "8px" }}
+            style={{ marginRight: '8px' }}
           />
           Bianca's Bike Shop
         </NavbarBrand>
@@ -54,7 +55,7 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
                     Work Orders
                   </NavLink>
                 </NavItem>
-                {loggedInUser.roles.includes("Admin") && (
+                {loggedInUser.roles.includes('Admin') && (
                   <NavItem onClick={() => setOpen(false)}>
                     <NavLink tag={RRNavLink} to="/employees">
                       Employees
@@ -63,12 +64,12 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
                 )}
               </Nav>
             </Collapse>
-            <NavbarText style={{ marginRight: "4px" }}>
+            <NavbarText style={{ marginRight: '4px' }}>
               Bikes in Garage: {inventory}
             </NavbarText>
             <Button
               color="primary"
-              onClick={(e) => {
+              onClick={e => {
                 e.preventDefault();
                 setOpen(false);
                 logout().then(() => {
