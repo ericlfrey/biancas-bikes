@@ -34,6 +34,10 @@ export default function WorkOrderList({ loggedInUser }) {
     );
   };
 
+  const handleDelete = id => {
+    console.log(id);
+  };
+
   return (
     <>
       <h2>Open Work Orders</h2>
@@ -81,9 +85,12 @@ export default function WorkOrderList({ loggedInUser }) {
                     onClick={() => completeWorkOrder(wo.id)}
                     color="success"
                   >
-                    Mark as Complete
+                    Complete
                   </Button>
                 )}
+                <Button color="danger" onClick={() => handleDelete(wo.id)}>
+                  Delete
+                </Button>
               </td>
             </tr>
           ))}
