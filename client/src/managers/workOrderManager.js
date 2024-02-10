@@ -33,3 +33,13 @@ export const closeWorkOrder = id => {
     }
   });
 }
+
+export const deleteWorkOrder = id => {
+  return fetch(`${_apiUrl}/${id}`, {
+    method: 'DELETE',
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+  });
+}

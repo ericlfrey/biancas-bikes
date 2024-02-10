@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Input, Table } from 'reactstrap';
 import {
   closeWorkOrder,
+  deleteWorkOrder,
   getIncompleteWorkOrders,
   updateWorkOrder,
 } from '../../managers/workOrderManager';
@@ -29,9 +30,11 @@ export default function WorkOrderList({ loggedInUser }) {
   };
 
   const completeWorkOrder = workOrderId => {
-    closeWorkOrder(workOrderId).then(() =>
-      getIncompleteWorkOrders().then(setWorkOrders)
-    );
+    closeWorkOrder(workOrderId).then(() => getAllIncompleteOrders());
+  };
+
+  const handleDelete = id => {
+    deleteWorkOrder(id).then(() => getAllIncompleteOrders());
   };
 
   return (
@@ -81,9 +84,12 @@ export default function WorkOrderList({ loggedInUser }) {
                     onClick={() => completeWorkOrder(wo.id)}
                     color="success"
                   >
-                    Mark as Complete
+                    Complete
                   </Button>
                 )}
+                <Button color="danger" onClick={() => handleDelete(wo.id)}>
+                  Delete
+                </Button>
               </td>
             </tr>
           ))}
